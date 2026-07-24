@@ -102,6 +102,14 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-fastfetch
-export PATH="$HOME/.npm-global/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
+# Deduplicate PATH
+typeset -U PATH
+
+export EDITOR=nvim
+export VISUAL=nvim
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PNPM_HOME:$PATH"
+
+# fastfetch only on first terminal (not subshells)
+[[ -z "$FASTFETCH_DONE" ]] && fastfetch && export FASTFETCH_DONE=1
