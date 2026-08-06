@@ -111,5 +111,26 @@ export VISUAL=nvim
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PNPM_HOME:$PATH"
 
+# fzf
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS='--color=bg+:#000000,fg:#ffffff,fg+:#ffffff,hl:#ffffff,hl+:#ffffff,info:#444444,prompt:#ffffff,pointer:#ffffff,marker:#ffffff,spinner:#444444,header:#444444 --no-bold --layout=reverse --height=40%'
+
+# Ctrl+P — jump to project
+fp() {
+    local dir
+    dir=$(find ~/Projects ~/epitech ~/stage -maxdepth 4 -type d -name .git 2>/dev/null | sed 's|/.git$||' | sort | fzf --prompt="project> ")
+    [[ -n "$dir" ]] && cd "$dir"
+}
+bindkey -s '^P' 'fp\n'
+
+# Ctrl+F — find and open file in nvim
+ff() {
+    local file
+    file=$(fzf --prompt="file> ")
+    [[ -n "$file" ]] && nvim "$file"
+}
+bindkey -s '^F' 'ff\n'
+
 # fastfetch only on first terminal (not subshells)
 [[ -z "$FASTFETCH_DONE" ]] && fastfetch && export FASTFETCH_DONE=1
+
